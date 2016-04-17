@@ -1,0 +1,7 @@
+configuration: Debug  
+
+before_build:
+  - nuget restore
+
+test_script:
+  - nunit3-console EventEmitterTests\bin\Debug\EventEmitterTests.dll
