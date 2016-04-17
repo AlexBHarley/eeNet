@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A3BEA9A4-9B36-4A15-A9C5-42478913D735}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>eeNet</RootNamespace>
     <AssemblyName>eeNet</AssemblyName>
@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="EventDoesNotExistException.cs" />
     <Compile Include="EventEmitter.cs" />
-    <Compile Include="IEventEmitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
