@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace eeNet
 {
-    public class EventDoesNotExistException : Exception
+    public class DoesNotExistException : Exception
     {
-        public EventDoesNotExistException() : base() { }
-        public EventDoesNotExistException(string message) : base(message) { }
-        public EventDoesNotExistException(string message, System.Exception inner) : base(message, inner) { }
+        public DoesNotExistException() : base() { }
+        public DoesNotExistException(string message) : base(message) { }
+        public DoesNotExistException(string message, System.Exception inner) : base(message, inner) { }
     }
 }
