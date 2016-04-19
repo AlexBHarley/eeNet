@@ -114,5 +114,26 @@ namespace eeNet
                 subscribedFuncs.RemoveAll(x => x != null);
             }
         }
+
+        /// <summary>
+        /// Emits the event and runs all associated funcs asynchronous
+        /// </summary>
+        /// <param name="eventName">The event name to call funcs for</param>
+        /// <param name="data">The data to call all the funcs with</param>
+        public async void EmitAsync(string eventName, object data)
+        {
+            List<Action<object>> subscribedFuncs;
+            if (!this._events.TryGetValue(eventName, out subscribedFuncs))
+            {
+                throw new DoesNotExistException(string.Format("Event [{0}] does not exist in the emitter. Consider calling EventEmitter.On", eventName));
+            }
+            else
+            {
+                foreach (var f in subscribedFuncs)
+                {
+                    Task.Run(() => f(data));
+                }
+            }
+        }
     }
 }
