@@ -11,11 +11,13 @@ EventEmitter ee;
 ee.On("eventName", Method);
 ee.Emit("eventName", "some_data");
 ee.EmitAsync("eventName", new List<string> {"data1", "data2"});
-ee.RemoveListener("eventName", Method)
-ee.RemoveAllListeners("eventName")
+ee.RemoveListener("eventName", Method);
+ee.RemoveAllListeners("eventName");
 ```
 
 ```C#
+//Example
+
 class Client
 {
     private EventEmitter _ee;
