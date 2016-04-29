@@ -10,14 +10,14 @@ namespace eeNet
     {
         /*
         {
-            KEY: "subscribe_event",
-            VALUE: [
+            "subscribe_event",
+            [
                 HandleSubscribe<List<object>>,
                 DoDbWork<List<object>>,
                 SendInfo<List<object>>
             ],
-            KEY: "listen_event",
-            VALUE: [
+             "listen_event",
+            [
                 HandleListen<List<object>>
             ]
         }
@@ -34,20 +34,20 @@ namespace eeNet
         }
 
         /// <summary>
-        /// Whenever eventName is emitted, the functions attached to this event will be called
+        /// Whenever eventName is emitted, the methods attached to this event will be called
         /// </summary>
         /// <param name="eventName">Event name to subscribe to</param>
-        /// <param name="func">Function to add to the event</param>
-        public void On(string eventName, Action<object> func)
+        /// <param name="method">Method to add to the event</param>
+        public void On(string eventName, Action<object> method)
         {
-            List<Action<object>> subscribedFuncs;
-            if (this._events.TryGetValue(eventName, out subscribedFuncs))
+            List<Action<object>> subscribedMethods;
+            if (this._events.TryGetValue(eventName, out subscribedMethods))
             {
-                subscribedFuncs.Add(func);
+                subscribedMethods.Add(method);
             }
             else
             {
-                this._events.Add(eventName, new List<Action<object>> { func });
+                this._events.Add(eventName, new List<Action<object>> { method });
             }
         }
 
@@ -55,17 +55,17 @@ namespace eeNet
         /// Emits the event and associated data
         /// </summary>
         /// <param name="eventName">Event name to be emitted</param>
-        /// <param name="data">Data to call the attached functions with</param>
+        /// <param name="data">Data to call the attached methods with</param>
         public void Emit(string eventName, object data)
         {
-            List<Action<object>> subscribedFuncs;
-            if (!this._events.TryGetValue(eventName, out subscribedFuncs))
+            List<Action<object>> subscribedMethods;
+            if (!this._events.TryGetValue(eventName, out subscribedMethods))
             {
                 throw new DoesNotExistException(string.Format("Event [{0}] does not exist in the emitter. Consider calling EventEmitter.On", eventName));
             }
             else
             {
-                foreach (var f in subscribedFuncs)
+                foreach (var f in subscribedMethods)
                 {
                     f(data);
                 }
@@ -73,63 +73,63 @@ namespace eeNet
         }
 
         /// <summary>
-        /// Removes the function [func] from the event
+        /// Removes [method] from the event
         /// </summary>
         /// <param name="eventName">Event name to remove function from</param>
-        /// <param name="func">Function to remove from the event name</param>
-        public void RemoveListener(string eventName, Action<object> func)
+        /// <param name="method">Method to remove from eventName</param>
+        public void RemoveListener(string eventName, Action<object> method)
         {
-            List<Action<object>> subscribedFuncs;
-            if (!this._events.TryGetValue(eventName, out subscribedFuncs))
+            List<Action<object>> subscribedMethods;
+            if (!this._events.TryGetValue(eventName, out subscribedMethods))
             {
                 throw new DoesNotExistException(string.Format("Event [{0}] does not exist to have listeners removed.", eventName));
             }
             else
             {
-                var _event = subscribedFuncs.Exists(e => e == func);
+                var _event = subscribedMethods.Exists(e => e == method);
                 if (_event == false)
                 {
-                    throw new DoesNotExistException(string.Format("Func [{0}] does not exist to be removed.", func.Method));
+                    throw new DoesNotExistException(string.Format("Func [{0}] does not exist to be removed.", method.Method));
                 }
                 else
                 {
-                    subscribedFuncs.Remove(func);
+                    subscribedMethods.Remove(method);
                 }                
             }
         }
 
         /// <summary>
-        /// Removes all functions from the event [eventName]
+        /// Removes all methods from the event [eventName]
         /// </summary>
-        /// <param name="eventName">Event name to remove functions from</param>
+        /// <param name="eventName">Event name to remove methods from</param>
         public void RemoveAllListeners(string eventName)
         {
-            List<Action<object>> subscribedFuncs;
-            if (!this._events.TryGetValue(eventName, out subscribedFuncs))
+            List<Action<object>> subscribedMethods;
+            if (!this._events.TryGetValue(eventName, out subscribedMethods))
             {
-                throw new DoesNotExistException(string.Format("Event [{0}] does not exist to have listeners removed.", eventName));
+                throw new DoesNotExistException(string.Format("Event [{0}] does not exist to have methods removed.", eventName));
             }
             else
             {
-                subscribedFuncs.RemoveAll(x => x != null);
+                subscribedMethods.RemoveAll(x => x != null);
             }
         }
 
         /// <summary>
-        /// Emits the event and runs all associated funcs asynchronous
+        /// Emits the event and runs all associated methods asynchronously
         /// </summary>
-        /// <param name="eventName">The event name to call funcs for</param>
-        /// <param name="data">The data to call all the funcs with</param>
-        public async void EmitAsync(string eventName, object data)
+        /// <param name="eventName">The event name to call methods for</param>
+        /// <param name="data">The data to call all the methods with</param>
+        public void EmitAsync(string eventName, object data)
         {
-            List<Action<object>> subscribedFuncs;
-            if (!this._events.TryGetValue(eventName, out subscribedFuncs))
+            List<Action<object>> subscribedMethods;
+            if (!this._events.TryGetValue(eventName, out subscribedMethods))
             {
                 throw new DoesNotExistException(string.Format("Event [{0}] does not exist in the emitter. Consider calling EventEmitter.On", eventName));
             }
             else
             {
-                foreach (var f in subscribedFuncs)
+                foreach (var f in subscribedMethods)
                 {
                     Task.Run(() => f(data));
                 }
